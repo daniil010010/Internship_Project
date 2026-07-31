@@ -2,7 +2,7 @@
 
 ## Description 
 
-This project is a command-line chatbot built with OpenAI API. It uses real-time streaming, token tracking and JSON logging.
+This project is a command-line chatbot built with OpenAI API. It uses real-time streaming, token tracking, conversation summaries, custom system prompts and JSON logging.
 
 ---
 
