@@ -147,22 +147,22 @@ class ChatSession:
 
 
     def handle_error(self, error: Exception) -> None:
-        if isintance(error, APIConnectionError):
+        if isinstance(error, APIConnectionError):
             console.print("[bold red]Connection error.[/bold red] "
                           "Please check your Internet connection.")
-        elif isintance(error, APITimeoutError):
+        elif isinstance(error, APITimeoutError):
             console.print("[bold red]Request timed out.[/bold red] "
                           "Please try again.")
-        elif isintance(error, AuthenticationError):
+        elif isinstance(error, AuthenticationError):
             console.print("[bold red]Authentication error.[/bold red] "
                           "Please check your API key.")
-        elif isintance(error, BadRequestError):
+        elif isinstance(error, BadRequestError):
             console.print("[bold red]Invalid request.[/bold red] "
                           "Please check the request parameters.")
-        elif isintance(error, RateLimitError):
+        elif isinstance(error, RateLimitError):
             console.print("[bold red]Rate limit exceeded.[/bold red] "
                           "Please try again later.")
-        elif isintance(error, APIStatusError):
+        elif isinstance(error, APIStatusError):
             console.print("[bold red]OpenAI server error.[/bold red] "
                           "Please try again later.")
         else:
