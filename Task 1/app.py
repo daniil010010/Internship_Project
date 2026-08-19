@@ -1,9 +1,12 @@
 import argparse
+from prompts import DEFAULT_PROMPT
 
 from chat_session import console, ChatSession
 
+
+
 parser = argparse.ArgumentParser(description='System prompt')
-parser.add_argument('--prompt', type=str, help="Prompt to enter specific model instructions", dest='prompt', default="Explain as you can")
+parser.add_argument('--prompt', type=str, help="Prompt to enter specific model instructions", dest='prompt', default=DEFAULT_PROMPT)
 args = parser.parse_args()
 console.print(f"[bold yellow]System prompt:[/bold yellow] {args.prompt}")
 
@@ -20,7 +23,11 @@ while True:
             break
 
         console.print(f"[bold green]User:[/bold green] {input_message}")
-        chat.send_messages("user", input_message)
+        chat.add_input(input_message, "user")
+        response = chat.send_messages("user", input_message)
+        chat.add_output(response)
+        chat.count_tokens(input_message, response)
+
 
 
 

@@ -9,27 +9,12 @@ from openai import (APIConnectionError,
                     RateLimitError,
                     APIStatusError)
 from rich.console import Console
-from pydantic_settings import BaseSettings, SettingsConfigDict, BaseModel
-
+from config import API_KEY
 from constants import MODEL
 from prompts import SUMMARY_PROMPT
+from schemas import TokenUsage
 
 
-class Settings(BaseSettings):
-    api_key: str
-
-    model_config = SettingsConfigDict(env_file=".env")
-
-
-class TokenUsage(BaseModel):
-    input: int = 0
-    output: int = 0
-    total: int = 0
-
-
-settings = Settings()
-
-API_KEY = settings.api_key
 
 console = Console()
 
@@ -46,8 +31,6 @@ class ChatSession:
 
 
     def send_messages(self, role: str, message: str) -> str | None:
-        self.add_input(message, role)
-
         try:
             stream = self.client.responses.create(
                 model=MODEL,
@@ -69,9 +52,6 @@ class ChatSession:
                 output_parts.append(event.delta)
                 print(event.delta, end="", flush=True)
         output = "".join(output_parts)
-
-        self.add_output(output)
-        self.count_tokens(message, output)
 
         return output
 
