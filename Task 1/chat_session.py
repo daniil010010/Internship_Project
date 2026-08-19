@@ -1,22 +1,24 @@
-from openai import OpenAI
-import tiktoken
-from datetime import datetime
 import json
-from openai import (APIConnectionError,
-                    APITimeoutError,
-                    AuthenticationError,
-                    BadRequestError,
-                    RateLimitError,
-                    APIStatusError)
-from rich.console import Console
+from datetime import datetime
+
+import tiktoken
 from config import API_KEY
 from constants import MODEL
+from openai import (
+    APIConnectionError,
+    APIStatusError,
+    APITimeoutError,
+    AuthenticationError,
+    BadRequestError,
+    OpenAI,
+    RateLimitError,
+)
 from prompts import SUMMARY_PROMPT
+from rich.console import Console
 from schemas import TokenUsage
 
-
-
 console = Console()
+
 
 class ChatSession:
     def __init__(self, prompt: str):
@@ -29,14 +31,10 @@ class ChatSession:
         self.prompt = prompt
         self.messages = []
 
-
     def send_messages(self, role: str, message: str) -> str | None:
         try:
             stream = self.client.responses.create(
-                model=MODEL,
-                instructions=self.prompt,
-                input=self.messages,
-                stream=True
+                model=MODEL, instructions=self.prompt, input=self.messages, stream=True
             )
         except Exception as error:
             self.handle_error(error)
@@ -55,61 +53,51 @@ class ChatSession:
 
         return output
 
-
     def count_tokens(self, message: str, output: str) -> None:
         encoding = tiktoken.encoding_for_model(MODEL)
 
         self.tokens.input += len(encoding.encode(message))
         self.tokens.output += len(encoding.encode(output))
-        self.tokens.total += (len(encoding.encode(message)) + len(encoding.encode(output)))
+        self.tokens.total += len(encoding.encode(message)) + len(
+            encoding.encode(output)
+        )
 
-        console.print(f"\n[bold magenta]Tokens used:[/bold magenta] {len(encoding.encode(message)) + len(encoding.encode(output))}")
-
+        console.print(
+            f"\n[bold magenta]Tokens used:[/bold magenta] {len(encoding.encode(message)) + len(encoding.encode(output))}"
+        )
 
     def add_input(self, message: str, role: str) -> None:
-        self.messages.append({
-            "role": role,
-            "content": message
-        })
-
+        self.messages.append({"role": role, "content": message})
 
     def add_output(self, output: str) -> None:
-        self.messages.append({
-            "role": "assistant",
-            "content": output
-        })
-
+        self.messages.append({"role": "assistant", "content": output})
 
     def summarize(self) -> str | None:
         try:
-
             summary = self.client.responses.create(
-                model=MODEL,
-                instructions=SUMMARY_PROMPT,
-                input=self.messages)
+                model=MODEL, instructions=SUMMARY_PROMPT, input=self.messages
+            )
         except Exception as error:
             self.handle_error(error)
             return None
 
-        console.print(f"[bold yellow]Conversation Summary[/bold yellow]\n[bold blue]Assistant:[/bold blue] {summary.output_text}")
+        console.print(
+            f"[bold yellow]Conversation Summary[/bold yellow]\n[bold blue]Assistant:[/bold blue] {summary.output_text}"
+        )
 
         return summary.output_text
-
 
     def create_logs(self) -> dict:
         summary = self.summarize()
         chat_session = {
             "timestamp": self.timestamp,
             "prompt": self.prompt,
-            "messages": [{
-                "role": "system",
-                "content": self.prompt
-            }],
+            "messages": [{"role": "system", "content": self.prompt}],
             "tokens": {
                 "input": self.tokens.input,
                 "output": self.tokens.output,
-                "total": self.tokens.total
-            }
+                "total": self.tokens.total,
+            },
         }
 
         for message in self.messages:
@@ -119,36 +107,35 @@ class ChatSession:
             chat_session["summary"] = summary
         return chat_session
 
-
     def save_logs(self, chat_session: dict) -> None:
         log_name = f"logs/{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}.json"
         with open(log_name, "w", encoding="utf-8") as f:
             json.dump(chat_session, f, indent=4, ensure_ascii=False)
 
-
     def handle_error(self, error: Exception) -> None:
         if isinstance(error, APIConnectionError):
-            console.print("[bold red]Connection error.[/bold red] "
-                          "Please check your Internet connection.")
+            console.print(
+                "[bold red]Connection error.[/bold red] "
+                "Please check your Internet connection."
+            )
         elif isinstance(error, APITimeoutError):
-            console.print("[bold red]Request timed out.[/bold red] "
-                          "Please try again.")
+            console.print("[bold red]Request timed out.[/bold red] Please try again.")
         elif isinstance(error, AuthenticationError):
-            console.print("[bold red]Authentication error.[/bold red] "
-                          "Please check your API key.")
+            console.print(
+                "[bold red]Authentication error.[/bold red] Please check your API key."
+            )
         elif isinstance(error, BadRequestError):
-            console.print("[bold red]Invalid request.[/bold red] "
-                          "Please check the request parameters.")
+            console.print(
+                "[bold red]Invalid request.[/bold red] "
+                "Please check the request parameters."
+            )
         elif isinstance(error, RateLimitError):
-            console.print("[bold red]Rate limit exceeded.[/bold red] "
-                          "Please try again later.")
+            console.print(
+                "[bold red]Rate limit exceeded.[/bold red] Please try again later."
+            )
         elif isinstance(error, APIStatusError):
-            console.print("[bold red]OpenAI server error.[/bold red] "
-                          "Please try again later.")
+            console.print(
+                "[bold red]OpenAI server error.[/bold red] Please try again later."
+            )
         else:
             console.print("[bold red]Unexpected error:[/bold red]")
-
-
-
-
-
