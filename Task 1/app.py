@@ -29,6 +29,6 @@ while True:
 
     console.print(f"[bold green]User:[/bold green] {input_message}")
     chat.add_input(input_message, "user")
-    response = chat.send_messages("user", input_message)
+    response = chat.send_messages()
     chat.add_output(response)
     chat.count_tokens(input_message, response)

@@ -16,22 +16,20 @@ from openai import (
 from prompts import SUMMARY_PROMPT
 from rich.console import Console
 from schemas import TokenUsage
+from openai.types.responses import Response
 
 console = Console()
 
 
 class ChatSession:
     def __init__(self, prompt: str):
-        if not API_KEY:
-            raise ValueError("API_KEY not set")
-
         self.client = OpenAI(api_key=API_KEY)
         self.tokens = TokenUsage()
         self.timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.prompt = prompt
         self.messages = []
 
-    def send_messages(self, role: str, message: str) -> str | None:
+    def send_messages(self) -> str | None:
         try:
             stream = self.client.responses.create(
                 model=MODEL, instructions=self.prompt, input=self.messages, stream=True
@@ -72,7 +70,7 @@ class ChatSession:
     def add_output(self, output: str) -> None:
         self.messages.append({"role": "assistant", "content": output})
 
-    def summarize(self) -> str | None:
+    def summarize(self) -> Response | None:
         try:
             summary = self.client.responses.create(
                 model=MODEL, instructions=SUMMARY_PROMPT, input=self.messages
@@ -85,7 +83,7 @@ class ChatSession:
             f"[bold yellow]Conversation Summary[/bold yellow]\n[bold blue]Assistant:[/bold blue] {summary.output_text}"
         )
 
-        return summary.output_text
+        return summary
 
     def create_logs(self) -> dict:
         summary = self.summarize()
@@ -104,7 +102,7 @@ class ChatSession:
             chat_session["messages"].append(message)
         console.print(f"[bold magenta]Total tokens:[/bold magenta] {self.tokens.total}")
         if summary:
-            chat_session["summary"] = summary
+            chat_session["summary"] = summary.output_text
         return chat_session
 
     def save_logs(self, chat_session: dict) -> None:
