@@ -15,8 +15,8 @@ from openai import (
 )
 from prompts import SUMMARY_PROMPT
 from rich.console import Console
-from schemas import TokenUsage
 from openai.types.responses import Response
+from token_counter import TokenCounter
 
 console = Console()
 
@@ -24,7 +24,6 @@ console = Console()
 class ChatSession:
     def __init__(self, prompt: str):
         self.client = OpenAI(api_key=API_KEY)
-        self.tokens = TokenUsage()
         self.timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.prompt = prompt
         self.messages = []
@@ -51,19 +50,6 @@ class ChatSession:
 
         return output
 
-    def count_tokens(self, message: str, output: str) -> None:
-        encoding = tiktoken.encoding_for_model(MODEL)
-
-        self.tokens.input += len(encoding.encode(message))
-        self.tokens.output += len(encoding.encode(output))
-        self.tokens.total += len(encoding.encode(message)) + len(
-            encoding.encode(output)
-        )
-
-        console.print(
-            f"\n[bold magenta]Tokens used:[/bold magenta] {len(encoding.encode(message)) + len(encoding.encode(output))}"
-        )
-
     def add_input(self, message: str, role: str) -> None:
         self.messages.append({"role": role, "content": message})
 
@@ -85,22 +71,22 @@ class ChatSession:
 
         return summary
 
-    def create_logs(self) -> dict:
+    def create_logs(self, token_counter: TokenCounter) -> dict:
         summary = self.summarize()
         chat_session = {
             "timestamp": self.timestamp,
             "prompt": self.prompt,
             "messages": [{"role": "system", "content": self.prompt}],
             "tokens": {
-                "input": self.tokens.input,
-                "output": self.tokens.output,
-                "total": self.tokens.total,
+                "input": token_counter.tokens.input,
+                "output": token_counter.tokens.output,
+                "total": token_counter.tokens.total,
             },
         }
 
         for message in self.messages:
             chat_session["messages"].append(message)
-        console.print(f"[bold magenta]Total tokens:[/bold magenta] {self.tokens.total}")
+        console.print(f"[bold magenta]Total tokens:[/bold magenta] {token_counter.tokens.total}")
         if summary:
             chat_session["summary"] = summary.output_text
         return chat_session
