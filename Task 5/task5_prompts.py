@@ -1,9 +1,3 @@
-EMBEDDING_MODEL = "text-embedding-3-small"
-
-AUDIO_MODEL = "whisper-1"
-
-TTS_MODEL = "gpt-4o-mini-tts"
-
 BASE_PROMPT = """
 You are a helpful AI assistant.
 
@@ -76,4 +70,10 @@ Rules:
 - Do not repeat a tool call with the same arguments unless the previous result was insufficient.
 - If no additional tool is required, provide the final answer to the user.
 - Answer clearly and directly.
+"""
+
+DEFAULT_PROMPT = """You are a helpful AI assistant.
+    Answer the user's questions clearly and accurately. 
+    Use available tools when they are appropriate.
+    When using semantic search, rely on the retrieved knowledge base context.
 """
