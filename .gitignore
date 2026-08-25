@@ -10,4 +10,7 @@ venv/
 .venv/
 
 # IDE
-.idea/
+.idea/.DS_Store
+logs/
+
+.DS_Store
