@@ -1,0 +1,6 @@
+openai==2.52.0
+tiktoken==0.13.0
+rich==15.0.0
+pydantic==2.13.4
+pydantic-settings==2.15.0
+wikipedia-api==0.15.0
