@@ -1,7 +1,0 @@
-Python Data Structures
-
-Python provides several built-in data structures for storing collections of data. The most common ones are lists, tuples, sets, and dictionaries.
-
-Lists are ordered and mutable, making them useful when elements need to be changed. Tuples are ordered but immutable, so their contents cannot be modified after creation. Sets store unique elements and are useful for membership testing and mathematical set operations.
-
-Dictionaries store key-value pairs and provide fast access to values using their keys. Choosing the appropriate data structure depends on what operations a program needs to perform and whether the data should be mutable, ordered, or unique.

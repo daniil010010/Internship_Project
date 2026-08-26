@@ -1,7 +1,0 @@
-Lists in Python
-
-A list is an ordered and mutable collection of objects. Lists can contain values of different types and can be changed after they are created. Elements in a list have positions called indexes, starting from zero.
-
-Lists support operations such as adding, removing, and replacing elements. Common methods include append(), insert(), remove(), and pop(). Python also provides useful operations for sorting and iterating over lists.
-
-Lists are useful when a program needs to store multiple related values in a specific order. For example, a list can contain the names of students, numbers, or results of calculations.
