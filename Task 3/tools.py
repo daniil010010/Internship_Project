@@ -1,6 +1,6 @@
 from openai import OpenAI
 from dotenv import load_dotenv
-from chat_session import MODEL
+from task3_chat_session import MODEL
 from rich.console import Console
 from openai import APIConnectionError, APITimeoutError, AuthenticationError, BadRequestError, RateLimitError, APIStatusError
 import os

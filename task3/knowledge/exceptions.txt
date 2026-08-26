@@ -1,0 +1,9 @@
+Exceptions in Python
+
+An exception is an error or unusual event that occurs while a program is running. Exceptions interrupt the normal flow of execution unless they are handled by the program.
+
+Python provides try and except blocks for handling exceptions. Code that might cause an exception can be placed inside a try block, while an except block can define what should happen when a particular exception occurs.
+
+The finally block can be used for code that must run regardless of whether an exception occurred. Programs can also raise exceptions explicitly using the raise statement.
+
+Exception handling allows programs to respond to errors without immediately terminating.

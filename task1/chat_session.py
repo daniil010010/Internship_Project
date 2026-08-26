@@ -2,8 +2,6 @@ import json
 from datetime import datetime
 
 import tiktoken
-from config import API_KEY
-from constants import MODEL
 from openai import (
     APIConnectionError,
     APIStatusError,
@@ -13,10 +11,13 @@ from openai import (
     OpenAI,
     RateLimitError,
 )
-from prompts import SUMMARY_PROMPT
-from rich.console import Console
 from openai.types.responses import Response
-from token_counter import TokenCounter
+from rich.console import Console
+
+from task1.config import API_KEY
+from task1.constants import MODEL
+from task1.prompts import SUMMARY_PROMPT
+from task1.token_counter import TokenCounter
 
 console = Console()
 
