@@ -1,0 +1,7 @@
+Inheritance in Python
+
+Inheritance is an object-oriented programming mechanism that allows one class to reuse attributes and methods from another class. The class being inherited from is often called the parent or base class, while the new class is called the child or derived class.
+
+A child class can use functionality defined in its parent class and can also add new functionality or override existing methods. This makes inheritance useful when several classes share common behavior.
+
+Python supports multiple inheritance, meaning a class can inherit from more than one parent class. The isinstance() function can be used to check whether an object is an instance of a particular class, while issubclass() checks relationships between classes.

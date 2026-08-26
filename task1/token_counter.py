@@ -1,5 +1,5 @@
-from constants import MODEL
-from schemas import TokenUsage
+from task1.constants import MODEL
+from task1.schemas import TokenUsage
 from rich.console import Console
 import tiktoken
 

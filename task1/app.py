@@ -1,8 +1,8 @@
 import argparse
 
-from chat_session import ChatSession, console
-from prompts import DEFAULT_PROMPT
-from token_counter import TokenCounter
+from task1.chat_session import ChatSession, console
+from task1.prompts import DEFAULT_PROMPT
+from task1.token_counter import TokenCounter
 
 parser = argparse.ArgumentParser(description="System prompt")
 parser.add_argument(
