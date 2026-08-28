@@ -1,7 +1,0 @@
-Generators in Python
-
-A generator is a special type of iterator that produces values one at a time instead of creating all values in memory at once. Generators are useful when working with large sequences of data.
-
-A generator function uses the yield keyword to produce a value. When yield is reached, the function pauses and remembers its current state. The next value can be requested later, allowing the function to continue from where it stopped.
-
-The next() function can be used to request the next value from an iterator or generator. Because generators produce values lazily, they can be more memory-efficient than storing a complete sequence in a list.

@@ -1,9 +1,0 @@
-Classes and Objects in Python
-
-A class is a blueprint for creating objects. It defines data and behavior that objects created from the class can have. An object is an instance of a class.
-
-Classes are an important part of object-oriented programming. They can contain attributes that store information and methods that define behavior.
-
-The __init__ method is commonly used to initialize an object's attributes when a new instance is created. Methods normally receive self as their first parameter, which refers to the current object.
-
-Using classes can make large programs easier to organize by grouping related data and behavior together.

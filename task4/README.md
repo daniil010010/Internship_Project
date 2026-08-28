@@ -19,21 +19,21 @@ The application supports:
 ## Project Structure
 
 ```text
-Task 4
+task4/
+|-- README.md
+|-- requirements.txt
 |-- app.py
-|-- whisper.py
-|-- chat_session.py
-|-- embeddings.py
-|-- tools.py
-|-- tool_schemas.py
-|-- .env
-|-- logs/
 |-- audio/
+|    |-- sample-speech-1m.mp3
+|-- audio_summary_day4.py
+|-- task4_chat_session.py
+|-- task4_constants.py
+|-- task4_prompts.py
 ```
 
 ## Requirements
 
-- Python 3.x
+- Python 3.12+
 - OpenAI API key
 
 The project uses the following Python libraries:
@@ -51,12 +51,20 @@ Create a `.env` file in the project directory:
 API_KEY=your_api_key_here
 ```
 
+## Installation
+
+Install the required dependencies:
+
+```
+pip install -r task4/requirements.txt
+```
+
 ## Usage
 
 Run the application:
 
 ```bash
-python3 app.py
+python3 -m task4.app
 ```
 
 The program will ask for the path to an audio file:
@@ -70,7 +78,7 @@ or /quit to exit:
 Enter the path to an audio file, for example:
 
 ```text
-audio/lecture.mp3
+task4/audio/lecture.mp3
 ```
 
 The application will:
@@ -95,7 +103,7 @@ python3 app.py
 Enter the path to an audio file:
 
 ```text
-Please enter the path to an audio file (supported extensions: '.mp3', '.wav' or '.m4a') or /quit to exit: /Users/daniil/Desktop/task1/audio/sample-speech-1m.mp3
+Please enter the path to an audio file (supported extensions: '.mp3', '.wav' or '.m4a') or /quit to exit: /Users/daniil/Desktop/task4/audio/sample-speech-1m.mp3
 ```
 
 The application transcribes the audio file using Whisper:
