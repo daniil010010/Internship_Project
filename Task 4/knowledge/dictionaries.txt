@@ -1,7 +1,0 @@
-Dictionaries in Python
-
-A dictionary is a mutable collection that stores data as key-value pairs. Each key is associated with a value, allowing programs to retrieve information using the key instead of a numeric index.
-
-Keys are normally unique and must be hashable. Values can have almost any type. A dictionary can be modified by adding new key-value pairs, changing existing values, or removing entries.
-
-Dictionaries are useful for representing structured information. For example, a student could be represented using keys such as name, age, and grade. The get() method can be used to safely retrieve a value when a key may not exist.
