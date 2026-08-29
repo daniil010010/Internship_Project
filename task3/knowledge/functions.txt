@@ -1,0 +1,7 @@
+Functions in Python
+
+A function is a reusable block of code designed to perform a particular task. Functions help programmers organize programs into smaller and easier-to-understand parts.
+
+A function is defined with the def keyword. It can receive input through parameters and can send a result back using the return statement. A function can also have default parameter values.
+
+Functions can be called many times from different parts of a program. Using functions reduces code duplication and makes programs easier to test and maintain. Python also supports anonymous functions through lambda expressions.

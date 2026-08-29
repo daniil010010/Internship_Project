@@ -96,27 +96,27 @@ source .venv/bin/activate
 Install dependencies:
 
 ```bash
-pip install -r requirements.txt
+pip install -r task2/requirements.txt
 ```
 
-Create a `.env` file:
-
+Create a `.env` file in the project root:
 ```
 API_KEY=your_openai_api_key
 ```
+
 
 ## Usage
 
 Run:
 
 ```bash
-python app.py
+python3 -m task2.app
 ```
 
 You can also provide a custom system prompt:
 
 ```bash
-python app.py --prompt "You are a helpful programming tutor."
+python3 -m task2.app --prompt "You are a helpful programming tutor."
 ```
 
 Exit the application:
@@ -177,13 +177,16 @@ Example:
 ```
 project/
 |
-|-- app.py
-|-- chat_session.py
-|-- tools.py
-|-- tool_schema.py
-|-- logs/
-|-- .env
-|-- README.md
+|-- task1/
+|   |-- app.py
+|   |-- chat_session.py
+|   |-- ...
+|
+|-- task2/
+|   |-- app.py
+|   |-- task2_chat_session.py
+|   |-- task2_tools.py
+|   |-- ...
 ```
 
 ## Technologies

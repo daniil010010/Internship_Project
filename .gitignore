@@ -14,3 +14,9 @@ venv/
 logs/
 
 .DS_Store
+.idea/
+
+# Generated files
+session/
+speech/
+*.mp3

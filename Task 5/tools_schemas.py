@@ -71,5 +71,34 @@ tools = [
             "additionalProperties": False
         },
         "strict": True
+    },
+    {
+        "type": "function",
+        "name": "summarize_session",
+        "description": "Summarize the current conversation session. Use this tool when the user explicitly asks to summarize, recap, or give an overview of the current conversation. The tool requires no arguments because it automatically uses the current session history.",
+        "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": False
+        },
+        "strict": True
+    },
+    {
+        "type": "function",
+        "name": "semantic_search",
+        "description": "Search the local knowledge base using semantic similarity. Use this tool when the user's question requires information that may be contained in the application's knowledge base. Do not use it for general questions or information that is clearly unrelated to the knowledge base. After receiving the search results, use the relevant information to answer or summarize the user's question.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "The user's question or search query used to find relevant information in the local knowledge base.",
+                },
+            },
+            'required': ["query"],
+            "additionalProperties": False
+        },
+        "strict": True
     }
 ]
