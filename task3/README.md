@@ -1,88 +1,234 @@
-# Task 3 — Semantic Search / RAG
+# Task 3 — AI Assistant with Semantic Search
 
-## Description
+## Overview
 
-A simple semantic search and RAG system for Python-related documents.
+Task 3 extends the AI assistant from the previous tasks by adding a local knowledge base and semantic search using embeddings and FAISS.
 
-The system:
-- Loads `.txt` documents from `knowledge/`
-- Creates embeddings using `text-embedding-3-small`
-- Calculates cosine similarity
-- Selects the top 3 relevant documents
-- Builds a context
-- Generates an answer using the language model
+The application is a command-line AI assistant that can answer questions using information retrieved from a local knowledge base. It uses OpenAI embeddings to convert documents and user queries into vectors and FAISS to find the most relevant documents.
 
-## Technologies
+## Features
 
-- Python
-- OpenAI API
-- NumPy
-- python-dotenv
-- Rich
+- Interactive command-line chat
+- OpenAI API integration
+- Token usage tracking
+- Local knowledge base
+- Semantic search
+- OpenAI embeddings
+- FAISS vector index
+- Context-based answers using retrieved documents
+- Configurable system prompt
+- Rich terminal output
+- Reuse of components from Task 1
 
-## Structure
+## Project Structure
 
+```text
+task3/
+|-- app.py
+|-- semantic_search_day3.py
+|-- task3_chat_session.py
+|-- task3_constants.py
+|-- task3_prompts.py
+|-- requirements.txt
+|
+|-- knowledge/
+    |-- async.txt
+    |-- classes.txt
+    |-- data_structures.txt
+    |-- dictionaries.txt
+    |-- exceptions.txt
+    |-- functions.txt
+    |-- generators.txt
+    |-- inheritance.txt
+    |-- lists.txt
+    |-- variables.txt
 ```
-Task 3
-├── app.py
-├── embeddings.py
-├── chat_session.py
-├── knowledge/
-└── README.md
+
+Task 3 also uses modules from `task1`, including the base chat session, configuration, prompts, constants, and token counter.
+
+## Requirements
+
+* Python 3.13+
+* OpenAI API key
+* Task 1 must be available in the project because Task 3 imports several modules from it.
+
+The required external dependencies are listed in:
+
+```text
+task3/requirements.txt
 ```
 
-## Run
+Install them with:
 
-Create a `.env` file:
-
-```
-API_KEY=your_api_key
+```bash
+pip install -r task3/requirements.txt
 ```
 
-Run the application:
+The project uses:
 
-```
-python3 app.py
+* `openai` - OpenAI API
+* `rich` - terminal output
+* `tiktoken` - token counting
+* `numpy` - numerical operations
+* `faiss-cpu` - vector similarity search
+* `pydantic-settings` - loading configuration from `.env`
+
+## Environment Variables
+
+Create a `.env` file in the project root:
+
+```text
+api_key=YOUR_OPENAI_API_KEY
 ```
 
-Enter `/start` and ask a question.
+The API key is loaded through the configuration from Task 1.
+
+## Running the Application
+
+Run Task 3 from the project root as a Python module:
+
+```bash
+python3 -m task3.app
+```
+
+Running it this way allows Task 3 to correctly import modules from `task1`.
+
+## Semantic Search
+
+The knowledge base contains text files with information about Python programming topics.
+
+When a user sends a question, the application:
+
+1. Creates an embedding for the user's query.
+2. Searches the FAISS index for the most relevant documents.
+3. Retrieves the corresponding text from the knowledge base.
+4. Creates a context from the retrieved documents.
+5. Sends the question and context to the AI assistant.
+6. Generates an answer based on the provided context.
+
+Example:
+
+```text
+Please enter your message or enter `quit` to end your Chat Session: What is inheritance?
+```
+
+The semantic search system finds the most relevant document and provides its contents to the assistant as context.
+
+## Knowledge Base
+
+The local knowledge base is stored in:
+
+```text
+task3/knowledge/
+```
+
+Each `.txt` file represents a separate document.
+
+For example:
+
+```text
+knowledge/
+|-- classes.txt
+|-- inheritance.txt
+|-- generators.txt
+|-- exceptions.txt
+```
+
+The documents are converted into embeddings and stored in the vector index.
+
+## Token Counting
+
+Task 3 uses the token counter inherited from Task 1 to track token usage during conversations and API requests.
+
+## Configuration
+
+The OpenAI API key is loaded using `pydantic-settings`.
+
+The configuration is provided by Task 1:
+
+```python
+from task1.config import API_KEY
+```
+
+This allows the application to read the API key from the `.env` file without hardcoding it in the source code.
+
+## Main Components
+
+### `app.py`
+
+The main entry point of the application.
+
+It initializes the semantic search system and the chat session and starts the interactive CLI.
+
+### `semantic_search_day3.py`
+
+Contains the vector store and semantic search functionality.
+
+It uses:
+
+* OpenAI embeddings
+* NumPy
+* FAISS
+
+to create and search the vector index.
+
+### `task3_chat_session.py`
+
+Extends the base chat session from Task 1 and adds functionality related to retrieval-augmented generation.
+
+### `task3_prompts.py`
+
+Contains prompts used by the Task 3 assistant, including the prompt for using retrieved context.
+
+### `task3_constants.py`
+
+Contains constants used by the semantic search system, such as the embedding model.
+
+## Example Workflow
+
+```text
+User question
+      |
+      |
+Create query embedding
+      |
+      |
+Search FAISS index
+      |
+      |
+Retrieve relevant documents
+      |
+      |
+Create context
+      |
+      |
+Send context + question to OpenAI
+      |
+      |
+Generate answer
+```
 
 ## Example
 
 ```text
-$ python3 app.py
-
-System prompt: Explain as you can
-
-Please enter the `/start` to start your Chat Session or enter `/quit` to end your Chat Session: /start
-
-System:
-Loaded: classes.txt
-Loaded: async.txt
-Loaded: variables.txt
-Loaded: inheritance.txt
-Loaded: functions.txt
-Loaded: generators.txt
-Loaded: dictionaries.txt
-Loaded: exceptions.txt
-Loaded: lists.txt
-Loaded: data_structures.txt
-
-Please enter your message or enter `/quit` to end your Chat Session: What is Python function?
-
-User: What is Python function?
+User: What is a Python generator?
 
 System: Creating query embedding
-System: Comparing embeddings
-System: Top 3 matches:
+System: Top matches:
+(1) generators.txt
+(2) functions.txt
+(3) classes.txt
 
-(1) functions.txt
-(2) variables.txt
-(3) exceptions.txt
-
-System: Creating context for the query
+System: Creating context
 
 Assistant:
-
-A Python function is a reusable block of code designed to perform a particular task. It’s defined with the def keyword, can receive input through parameters (including default values), and can send back a result using return. Functions can be called multiple times from different parts of a program, reducing code duplication and improving maintainability. Python also supports anonymous functions via lambda expressions.
+A generator is a Python function that produces values lazily using
+the yield keyword...
 ```
+
+## Notes
+
+Task 3 is designed to run as part of the overall internship project and depends on reusable components from Task 1.
+
+The `.venv` directory should not be committed to Git. Dependencies should be installed using `requirements.txt`.
+
