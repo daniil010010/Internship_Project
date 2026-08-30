@@ -1,0 +1,6 @@
+openai==3.6.0
+rich==15.0.0
+tiktoken==0.14.0
+numpy==2.5.2
+faiss-cpu==1.15.0
+pydantic-settings==2.10.1
