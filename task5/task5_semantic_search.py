@@ -118,9 +118,6 @@ class VectorStore(BaseVectorStore):
         embedding = embeddings.create_embedding(text)
         self.embeddings[file_name] = embedding
         self.build_index(self.embeddings)
-        print("Documents:", len(self.documents))
-        print("Embeddings:", len(self.embeddings))
-        print("Index:", self.index.ntotal)
 
 
 
